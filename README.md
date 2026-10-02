@@ -1,23 +1,28 @@
-# Crowsi credential authority contracts
+# crowsi-credential-authority-contracts
 
-Closed, secret-free DTO and canonical proof bytes. This crate owns no authority store, policy,
-provider executor, custody implementation, transport, or account correlation state.
+Exchange credential-authority requests without placing secret values in the contract.
 
-Management v2 is the current-only browser/endpoint contract. Requests contain only user intent,
-opaque operation IDs, CAS revisions, and public WebAuthn assertion bytes. They cannot contain
-caller-made identity assertions, current status, FreshUv, target proof, account ID, session ID, or
-private keys. Endpoint agents obtain and verify those factors directly from their local custody and
-remote authorities.
+## What you can do
 
-Every snapshot, pending list, options response, and operation result is carried in a 30-second
-`ManagementProjectionV2` signed by the Credential Authority. The signature covers the current
-endpoint device/session, service pairwise subject, opaque service owner, snapshot revision, device
-and session revocation epochs, operation scope/state, required actor, excluded device refs, public
-WebAuthn options, closed reason, and reconcile digest. Passive refresh may reuse the same valid
-projection; mutations use the included state revision and authority journal.
+- Represent device, grant and credential-reference relationships.
+- Validate bounded proof and operation envelopes.
 
-Owner recovery uses a mnemonic seed phrase as the primary recovery method, but this crate exposes
-only `OwnerRecoveryCustodyReceiptV1`: recovery identity, custody provider, key revision, state and a
-SHA-256 root fingerprint. Mnemonic words and derived private keys have no wire field. Their
-generation, confirmation and use remain inside a purpose-specific Crowsi custody provider; Hatter,
-HATs, Zixcel orchestration and browser projections receive public proof metadata only.
+## Current scope
+
+These types carry references and evidence. Custody and authorization remain with their configured services.
+
+Package distribution is not activated by this documentation. Use the checked-in source and the declared dependency versions; published availability must be verified separately.
+
+## Getting started
+
+Install Rust 1.97 or newer and make the declared dependencies available. Use the configured private registry when a dependency is not distributed publicly. Run from this repository:
+
+```sh
+cargo test --locked
+```
+
+## Documentation and source
+
+[Usage guide](docs/getting-started.md)
+
+[Implementation and public interfaces](src) · [Verification cases](tests) · [Contributing](CONTRIBUTING.md) · [Security reporting](SECURITY.md) · [License](LICENSE) · [Attribution notices](NOTICE)
